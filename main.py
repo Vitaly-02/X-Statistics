@@ -53,19 +53,25 @@ def interval_row(data):
     sigma = math.sqrt(d)
     numerical_estimates = (['M', 'D', 'Sigma', 'h'], [m, d, sigma, h])
 
-    # функция F*(x) (информация для построения графика в function_graph_x/y)
+    # функция F*(x) (информация для построения графика в function_graph_x, function_graph_y)
+    # информация для построения гистограммы относительных частот в histogram_x, histogram_y
     function = []
     function_graph_x = ['x    ', 0]
     function_graph_y = ['F*(x)', 0]
+    histogram_x = ['x     ']
+    histogram_y = ['n_i/nh']
     current_value = 0
     condition = str(x[0])
     for i in range(0, len(n_i)):
+        histogram_x.append(str(x[i]).replace('.', ','))
+        temp_y = n_i[i] / len(n_i) / h
+        histogram_y.append(str(temp_y).replace('.', ','))
+
         temp_value = current_value + n_i[i] / sum(n_i)
 
         if temp_value != current_value:
             if current_value == 0:
                 condition = 'x <= ' + str(x[i])
-                # function_graph_x.append(x[i])
             else:
                 condition += ' < x <= ' + str(x[i])
             function.append([current_value, condition])
@@ -99,6 +105,9 @@ def interval_row(data):
         out.writerow(['Function F*(x) graph'])
         out.writerow(function_graph_x)
         out.writerow(function_graph_y)
+        out.writerow(['Histogram of relative frequencies'])
+        out.writerow(histogram_x)
+        out.writerow(histogram_y)
 
 
 if __name__ == '__main__':
@@ -108,6 +117,9 @@ if __name__ == '__main__':
     #         19, 21, 17, 20]
     # data3 = [2, 2, 2, 2, 2, 1, 1, 0, 3, 1, 1, 1, 5, 4, 4, 4, 0, 1, 1, 4, 1, 0, 9, 1, 4, 5, 2, 1, 2, 1]
     # data4 = [1, 2, 1, 2, 2, 1, 1, 3, 4, 1, 1, 2, 3, 3, 1]
+    # data5 = [3, 2, 1, 1, 2, 0, 2, 3, 1, 2, 1, 4, 4, 1, 3, 4, 3, 2, 0, 2, 2, 1, 3, 0, 5, 2, 3, 2 ,3, 4]
+    # data6 = [12, 1, 9, 16, 2, 23, 6, 5, 13, 12, 3, 23, 10, 36, 10, 12, 5, 4, 19, 8, 2, 4, 11, 2, 11, 4, 7,
+    #         5, 7, 8]
     print('Enter sample data without commas.')
     data_input = [int(s) for s in input().split()]
     interval_row(data_input)
